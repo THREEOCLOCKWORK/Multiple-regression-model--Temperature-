@@ -1,0 +1,33 @@
+##  Temperature project  ##
+##  Akhila Thomas        ##
+
+#importing data 
+input_df=pd.read_csv("clean_data_2017.csv") 
+
+# changing the column name and all in lowercase
+input_df = input_df.rename(columns = {"Time":"date","Var1": "co2", "Var2": "rh","Var3": "temp"})
+input_df.set_index('date',inplace=False)
+input_df["date"]=pd.to_datetime(input_df["date"])
+
+# Summary statistics of the dataset.
+head(input_df)
+
+# seperating the input and output variable into differnt datasets
+input_df_x=input_df.drop(['date'],axis=1)
+input_df_y=input_df.drop(['date','co2','rh'],axis=1)
+
+# seperating the data as test and train 
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train,y_test = train_test_split(input_df_x,input_df_y,test_size = 0.2,random_state=0)
+
+#Training the data by applying regression  
+from sklearn.linear_model import LinearRegression
+regressor=LinearRegression()
+regressor.fit(x_train,y_train)
+
+#The model is already created and testing using tetsing data
+y_pred = regressor.predict(x_test)
+
+#understanading the accuracy of model using residual value Rsquare
+from sklearn.metrics import r2_score
+score=r2_score(y_test,y_pred)
