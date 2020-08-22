@@ -10,7 +10,7 @@ input_df.set_index('date',inplace=False)
 input_df["date"]=pd.to_datetime(input_df["date"])
 
 # Summary statistics of the dataset.
-head(input_df)
+input_df.head()
 
 # seperating the input and output variable into differnt datasets
 input_df_x=input_df.drop(['date'],axis=1)
